@@ -1,0 +1,343 @@
+
+
+# PRD: GitHub Intelligence MCP Server
+
+## 1. Project Overview
+
+Build a production-style MCP (Model Context Protocol) server using Python.
+
+The MCP server connects with the public GitHub REST API and exposes tools that allow an LLM agent to analyze GitHub users and repositories.
+
+The server must return clean structured JSON responses.
+
+Primary goal:
+Create an MCP server that acts as a bridge between an AI agent and GitHub developer data.
+
+---
+
+# 2. Tech Stack
+
+Language:
+
+* Python 3.11+
+
+Framework:
+
+* MCP Python SDK
+* FastMCP
+
+Libraries:
+
+* requests
+* python-dotenv
+* pydantic (for response validation)
+
+API:
+
+* GitHub REST API
+
+Transport:
+
+* stdio MCP transport
+
+---
+
+# 3. Folder Structure
+
+Generate the project using this structure:
+
+```text
+github-intelligence-mcp/
+
+│── server.py
+│── github_client.py
+│── models.py
+│── config.py
+│── requirements.txt
+│── .env.example
+│── README.md
+
+```
+
+---
+
+# 4. MCP Server Requirements
+
+Create MCP server:
+
+Name:
+
+```
+github-intelligence
+```
+
+Use:
+
+```python
+from mcp.server.fastmcp import FastMCP
+```
+
+---
+
+# 5. Tools Implementation
+
+The server must expose exactly these MCP tools.
+
+---
+
+## Tool 1: get_github_profile
+
+Purpose:
+
+Fetch GitHub user information.
+
+Input:
+
+```json
+{
+ "username":"string"
+}
+```
+
+Example:
+
+```
+get_github_profile("torvalds")
+```
+
+API:
+
+```
+GET https://api.github.com/users/{username}
+```
+
+Return JSON:
+
+```json
+{
+ "success":true,
+ "data":{
+    "username":"torvalds",
+    "name":"Linus Torvalds",
+    "followers":10000,
+    "following":0,
+    "public_repos":10,
+    "profile_url":"..."
+ },
+ "error":null
+}
+```
+
+Handle:
+
+* invalid username
+* API failure
+* network errors
+
+---
+
+# Tool 2: analyze_repository
+
+Purpose:
+
+Analyze GitHub repository information.
+
+Input:
+
+```json
+{
+ "owner":"string",
+ "repository":"string"
+}
+```
+
+Example:
+
+```
+analyze_repository(
+"facebook",
+"react"
+)
+```
+
+API:
+
+```
+GET https://api.github.com/repos/{owner}/{repository}
+```
+
+Return:
+
+```json
+{
+"success":true,
+
+"data":{
+
+"name":"react",
+
+"description":"UI library",
+
+"stars":230000,
+
+"forks":40000,
+
+"language":"JavaScript",
+
+"open_issues":1000,
+
+"created_at":"date"
+
+},
+
+"error":null
+
+}
+```
+
+---
+
+# 6. MCP Resource
+
+Add one MCP resource.
+
+Name:
+
+```
+github://analysis-rules
+```
+
+Purpose:
+
+Provide context to the LLM about repository quality.
+
+Return:
+
+```json
+{
+"quality_metrics":[
+"stars",
+"activity",
+"issues",
+"forks",
+"community adoption"
+],
+
+"description":
+"Rules used when analyzing repository health"
+}
+```
+
+---
+
+# 7. MCP Prompt
+
+Create MCP prompt:
+
+Name:
+
+```
+repository_review_prompt
+```
+
+Purpose:
+
+Reusable prompt for AI repository analysis.
+
+Prompt:
+
+```
+Analyze this GitHub repository like a senior software engineer.
+
+Evaluate:
+- popularity
+- maintainability
+- technology stack
+- community activity
+
+Give clear recommendations.
+```
+
+---
+
+# 8. Error Handling Requirements
+
+Every response must follow:
+
+```json
+{
+"success":boolean,
+"data":object|null,
+"error":string|null
+}
+```
+
+Never expose raw API errors.
+
+---
+
+# 9. Environment Variables
+
+Support:
+
+```
+GITHUB_TOKEN=
+```
+
+Token optional.
+
+If provided:
+Use authenticated requests.
+
+If missing:
+Use public API mode.
+
+---
+
+# 10. README Requirements
+
+Generate README containing:
+
+* Project description
+* Installation steps
+* Setup instructions
+* Available MCP tools
+* Example tool calls
+* Example JSON responses
+* How to connect with Claude Desktop/Cursor
+
+---
+
+# 11. Acceptance Criteria
+
+Project is complete when:
+
+✅ MCP server starts successfully
+
+✅ LLM client detects tools
+
+✅ get_github_profile works
+
+✅ analyze_repository works
+
+✅ JSON response format consistent
+
+✅ Resource available
+
+✅ Prompt available
+
+✅ README completed
+
+---
+
+# Extra Quality Requirements
+
+Write clean production-style code:
+
+* Type hints everywhere
+* Separate API logic from MCP logic
+* No hardcoded secrets
+* Clear function names
+* Comments where needed
+* Beginner friendly structure
+
