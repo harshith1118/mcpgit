@@ -6,14 +6,46 @@ A professional-grade Model Context Protocol (MCP) server built with Python and F
 
 The GitHub Intelligence MCP Server acts as a high-performance bridge between AI agents (such as Claude Desktop, Cursor, or IDE extensions) and the GitHub REST API. It delivers sanitized, structured, and validated data, enabling AI assistants to perform repository audits, user profile analysis, and community health checks with precision.
 
-### Key Features
+---
 
--   **Profile Analysis**: Comprehensive statistics for any GitHub user, including follower counts and repository metrics.
--   **Repository Insights**: Deep-dive data on stars, forks, language distribution, and issue counts.
--   **Input Sanitization**: Automatic handling of whitespace and newline characters in tool inputs.
--   **Robust Error Handling**: Graceful management of GitHub API rate limits, 404 errors, and network timeouts.
--   **Structured JSON Responses**: Native Python dictionary returns ensure perfect integration with MCP clients.
--   **AI-Ready Resources**: Built-in analysis rules and a senior-level repository review prompt.
+## 🤖 AI-Assisted Development
+
+### AI Tools Used
+
+This project was developed with assistance from:
+
+- Gemini CLI
+
+### How Gemini CLI Accelerated Development
+
+Gemini CLI was used throughout the development process to speed up:
+
+#### 1. Architecture Planning
+- Designed the MCP server structure
+- Planned separation between:
+  - MCP interface layer
+  - GitHub API client
+  - Response models
+  - Configuration handling
+
+#### 2. Code Generation
+- Generated the initial FastMCP implementation
+- Created MCP tool definitions
+- Assisted with GitHub REST API integration
+
+#### 3. Debugging & Improvements
+- Helped identify and fix:
+  - MCP response serialization issues
+  - JSON formatting improvements
+  - Input sanitization problems
+
+#### 4. Documentation
+- Assisted in creating:
+  - Setup instructions
+  - Usage examples
+  - MCP testing workflow
+
+All generated code was reviewed, tested using MCP Inspector, and refined manually.
 
 ---
 
